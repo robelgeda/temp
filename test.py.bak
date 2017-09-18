@@ -1,0 +1,56 @@
+from __future__ import absolute_import, division, print_function
+
+import sys
+import os
+from glob import glob
+from time import sleep
+import numpy as np
+import random as rn
+from functools import partial
+
+from qtpy import compat
+from qtpy.uic import loadUi
+from qtpy.QtWidgets import QMainWindow,QApplication
+from qtpy.QtWidgets import QWidget,QMessageBox
+from qtpy.QtCore import Qt
+
+from glue.config import menubar_plugin
+
+from astropy.table import QTable
+import astropy.units as u
+from astropy.io import fits
+from astropy.wcs import WCS, NoConvergence
+from astropy.coordinates import SkyCoord
+from astropy.nddata.utils import (Cutout2D, NoOverlapError)
+from astropy import log
+from astropy.coordinates import Angle 
+
+
+
+class CutoutTool (QMainWindow):
+	def __init__ (self, parent=None):
+		super(CutoutTool,self).__init__(parent,Qt.WindowStaysOnTopHint)
+		self.title = "NIRSpec Cutout Tool"
+		self.spec_path = ""
+		self.img_path = ""
+		self.save_path  = ""
+		self.cutout_x_size = 0
+		self.cutout_y_size = 0
+		self.cutout_x_size_default = ""
+		self.cutout_y_size_default = ""
+		self.custom_save_path  = False
+		self.imageExt = ['*.fits', '*.FITS', '*.fit', '*.FIT',
+ 		'*.fts', '*.FTS', '*.fits.Z', '*.fits.z', '*.fitz',
+ 		'*.FITZ', '*.ftz', '*.FTZ', '*.fz', '*.FZ']
+		self.initUI()
+
+	def initUI(self):
+		path = "table_gen.ui"
+		loadUi(path, self)
+
+
+
+if __name__ == "__main__":
+	app = QApplication(sys.argv)
+	ex = CutoutTool(app)
+	sys.exit(app.exec_())
