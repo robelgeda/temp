@@ -262,7 +262,7 @@ class NIRSpec_TableGen(QMainWindow):
         else:
             self.spectra_user_input.setStyleSheet("")
 
-        if self.save_file_name == "":
+        if self.save_file_name == "" or "/" in self.save_file_name or "\\" in self.save_file_name:
             self.filename_user_input.setStyleSheet("background-color: rgba(255, 0, 0, 128);")
             success = False
         else:
@@ -315,15 +315,14 @@ class NIRSpec_TableGen(QMainWindow):
     def call_main(self):
         """
         Calls the main function and handles exceptions.
-        "
+        """
         try:
             self.main()
         except Exception as e:
             info = QMessageBox.critical(self, "Error", str(e))
             print("Error:", sys.exc_info())
             self.close()
-        """
-        self.main()
+        
         
     def main(self):
         """
